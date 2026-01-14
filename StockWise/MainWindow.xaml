@@ -6,7 +6,62 @@
         xmlns:local="clr-namespace:StockWise"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Search & Filters -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Details & Buttons -->
+            <RowDefinition Height="Auto"/>
+            <!-- Status -->
+        </Grid.RowDefinitions>
 
+        <!-- Search & Filters -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10" VerticalAlignment="Center">
+            <Label Content="Search:" VerticalAlignment="Center"/>
+            <TextBox Width="200" Margin="5,0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Category:" VerticalAlignment="Center"/>
+            <ComboBox Width="120" Margin="5,0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+            <CheckBox Content="Low Stock Only" Margin="10,0" IsChecked="{Binding ShowLowStockOnly}"/>
+        </StackPanel>
+
+        <!-- Product List -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Details & Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Name:" Width="80"/>
+                <TextBox Width="200" Text="{Binding SelectedProduct.Name, Mode=TwoWay}"/>
+                <Label Content="Category:" Width="80" Margin="20,0,0,0"/>
+                <TextBox Width="200" Text="{Binding SelectedProduct.Category, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Price:" Width="80"/>
+                <TextBox Width="200" Text="{Binding SelectedProduct.Price, Mode=TwoWay}"/>
+                <Label Content="Quantity:" Width="80" Margin="20,0,0,0"/>
+                <TextBox Width="200" Text="{Binding SelectedProduct.Quantity, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+                <Button Content="Add" Width="100" Command="{Binding AddProductCommand}" Margin="0,0,5,0"/>
+                <Button Content="Edit" Width="100" Command="{Binding EditProductCommand}" Margin="0,0,5,0"/>
+                <Button Content="Delete" Width="100" Command="{Binding DeleteProductCommand}" Margin="0,0,5,0"/>
+                <Button Content="Increase Stock" Width="120" Command="{Binding IncreaseStockCommand}" Margin="0,0,5,0"/>
+                <Button Content="Decrease Stock" Width="120" Command="{Binding DecreaseStockCommand}" Margin="0,0,5,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Status Message -->
+        <TextBlock Grid.Row="3" Text="{Binding StatusMessage}" Foreground="Green" FontWeight="Bold" Margin="0,5,0,0"/>
     </Grid>
 </Window>
